@@ -15,10 +15,12 @@ public:
 public:
     // Getters
     double getNeuronVal() {return this->neuronVal;}
+    double getActivatedVal() {return this->neuronActivatedVal;}
     std::vector<double> getNeuronWeights() {return this->weights;}
 
     //Setters
     void setNeuronVal(double val) {this->neuronVal = val;}
+    void setActivatedVal(double val) {this->neuronActivatedVal = val;}
     void setWeights(double weightVal) {this->weights.push_back(weightVal);}
     void setNumWeights(int val) {this->numWeights = val;}
 

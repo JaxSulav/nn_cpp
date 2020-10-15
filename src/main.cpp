@@ -17,6 +17,8 @@ int main(int argc, char const *argv[])
 
     // Create new instance of neural network
     NeuralNetwork *nn = new NeuralNetwork(topology, input);
+    nn->feedForward();
+    nn->printLayers();
 
     delete nn;
     return 0;
