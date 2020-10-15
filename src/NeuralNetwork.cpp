@@ -2,11 +2,12 @@
 
 
 
-NeuralNetwork::NeuralNetwork(std::vector<int> topology) 
+NeuralNetwork::NeuralNetwork(std::vector<int> topology, std::vector<double> inputVals) 
 {
     /* topology vector stores the values of number of neurons in each layer as index of the layers. 
     If the nn contains 3 input layers, 2 hidden and 2 output layer, topology vector contains (3,2,2) */
     this->topology = topology;
+    this->inputVals = inputVals;
 
     // Initialize the layers for the network and store in layers vector
     for (int i=0; i<(int)topology.size(); i++){
@@ -21,6 +22,11 @@ NeuralNetwork::NeuralNetwork(std::vector<int> topology)
             // For each neuron 
             this->layers.at(i)->setNeuronWeights(this->layers.at(i+1)->getNeuronsofALayer().size(), j);
         }
+    }
+
+    // Set inputs value of the inputVals vector to the neurons of the input layer of neural network
+    for (int i=0; i<this->layers.at(0)->getNeuronsofALayer().size(); i++){
+        this->layers.at(0)->getNeuronsofALayer().at(i)->setNeuronVal(this->inputVals.at(i));
     }
 
     // Log

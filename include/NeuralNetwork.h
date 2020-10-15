@@ -8,12 +8,13 @@
 class NeuralNetwork
 {
 public:
-    NeuralNetwork(std::vector<int> topology);
+    NeuralNetwork(std::vector<int> topology, std::vector<double> inputVals);
     ~NeuralNetwork();
 
 private:
     std::vector<int> topology;
     std::vector<Layer *> layers;
+    std::vector<double> inputVals;
 
 private:
     // Heap allocated

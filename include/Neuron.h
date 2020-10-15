@@ -18,6 +18,7 @@ public:
     std::vector<double> getNeuronWeights() {return this->weights;}
 
     //Setters
+    void setNeuronVal(double val) {this->neuronVal = val;}
     void setWeights(double weightVal) {this->weights.push_back(weightVal);}
     void setNumWeights(int val) {this->numWeights = val;}
 
