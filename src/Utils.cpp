@@ -1,9 +1,11 @@
 #include "../include/Utils.h"
 
 
-namespace rand_generator_norm_dist
+// Random number generator
+namespace rand_generator
 {
-    double rand_gen() 
+    // Random number from normal distribution
+    double rand_gen_norm_dist() 
     {
         auto mean = 0;
         auto stdDev = 1;
@@ -14,7 +16,7 @@ namespace rand_generator_norm_dist
 
         double randVal = distribution(randGenerator);
 
-        // Between 0 - 1
+        // Values between 0 - 1
         while (randVal < 0 || randVal > 1){
             randVal = distribution(randGenerator);
         }

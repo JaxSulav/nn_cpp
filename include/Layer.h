@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Neuron.h"
+#include "Utils.h"
 
 class Layer
 {
@@ -12,7 +13,11 @@ public:
     ~Layer();
 
 public:
+    // Getters
     std::vector<Neuron *> getNeuronsofALayer() {return this->neurons;}
+
+    // Setters
+    void setNeuronWeights(int numWeights, int neuronIdx); 
 
 private:
     int size;
