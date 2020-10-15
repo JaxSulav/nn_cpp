@@ -1,0 +1,6 @@
+#build dir
+build/*
+
+#vscode
+.vscode
+
