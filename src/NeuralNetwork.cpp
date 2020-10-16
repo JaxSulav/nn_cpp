@@ -113,7 +113,7 @@ void NeuralNetwork::backwardPropagation()
     // Calculate errors
     this->calcErrors();
 
-    for (int i=0; i<errors.size(); i++){
+    for (int i=0; i<(int)errors.size(); i++){
         std::cout << "ERRORS: " << errors.at(i) << std::endl;
     }
 
@@ -121,7 +121,7 @@ void NeuralNetwork::backwardPropagation()
     std::vector<Neuron *> outputNeurons = this->layers.at(this->layers.size()-1)->getNeuronsofALayer();
 
     // Weights update for last hidden layer
-    for (int i=0; i<lastHiddenLayerNeurons.size(); i++){
+    for (int i=0; i<(int)lastHiddenLayerNeurons.size(); i++){
         // For each neurons in last hidden layer
         for (int j=0; j<(int)outputNeurons.size(); j++){
             // For each weight of a neuron
@@ -147,7 +147,7 @@ void NeuralNetwork::backwardPropagation()
     }
 
     /*  Weights update for other layers */
-    for (int i=this->layers.size()-3; i>=0; i--){
+    for (int i=(int)this->layers.size()-3; i>=0; i--){
         // Incase of multiple hidden layers
         // For each layer except last hidden layer and output layer
         for (int j=0; j<(int)this->layers.at(i)->getNeuronsofALayer().size(); j++){
@@ -167,7 +167,7 @@ void NeuralNetwork::backwardPropagation()
                 }
 
                 for (int idx=0; idx<(int)outputNeurons.size(); idx++){
-                    double X = - (errors.at(idx)); 
+                    double X = - (errors.at(idx));
                     double Y = this->layers.at(i+2)->getNeuronsofALayer().at(idx)->getDerivedVal(); 
                     double Z = this->layers.at(i+1)->getNeuronsofALayer().at(k)->getNeuronWeights().at(idx);
 
@@ -209,5 +209,19 @@ void NeuralNetwork::printLayers()
             }
         }
 
+    }
+}
+
+
+void NeuralNetwork::train(int iteration) 
+{
+    // Train Network
+    for (int i=0; i<iteration; i++){
+        this->feedForward();
+        std::cout << "\n_____----------__________ FEED FORWARD __________--------__________----\n" << std::endl;
+        this->printLayers();
+        this->backwardPropagation();
+        std::cout << "\n_____----------__________ BACK PROPAGATION __________--------__________----\n" << std::endl;
+        this->printLayers();
     }
 }

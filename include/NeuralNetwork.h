@@ -21,6 +21,8 @@ public:
 
     void printLayers();
 
+    void train(int iteration);
+
 private:
     std::vector<int> topology;
     std::vector<double> errors;
