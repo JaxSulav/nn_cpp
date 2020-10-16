@@ -74,6 +74,10 @@ void NeuralNetwork::feedForward()
             double activatedPerceptronOp = Activate::ACTIVATION_SIGMOID(perceptronOutput);
             this->layers.at(i)->getNeuronsofALayer().at(j)->setActivatedVal(activatedPerceptronOp);
 
+            // Find and set the derivative value for the activated Val of neuron
+            double derivedActivatedVal = Derive::DERIVATION_SIGMOID(activatedPerceptronOp);
+            this->layers.at(i)->getNeuronsofALayer().at(j)->setDerivedVal(derivedActivatedVal);
+
         }
     }
 }
@@ -85,7 +89,7 @@ void NeuralNetwork::calcErrors()
     from the expected output and do not take the MSE because we perform the derivative of 
     the MSE in the backpropagation algorithm which will result in the negative of the following calculated error */
 
-    int outputLayerIdx = this->layers.size() -1 ;
+    int outputLayerIdx = this->layers.size() - 1 ;
     // For each neuron in output layer
     for (int i=0; i<(int)this->layers.at(outputLayerIdx)->getNeuronsofALayer().size(); i++){
 
@@ -104,12 +108,40 @@ void NeuralNetwork::calcErrors()
 
 void NeuralNetwork::backwardPropagation() 
 {
+    double learningRate = 1;
+
     // Calculate errors
     this->calcErrors();
 
     for (int i=0; i<errors.size(); i++){
         std::cout << "ERRORS: " << errors.at(i) << std::endl;
     }
+
+    std::vector<Neuron *> lastHiddenLayerNeurons = this->layers.at(this->layers.size()-2)->getNeuronsofALayer();
+    std::vector<Neuron *> outputNeurons = this->layers.at(this->layers.size()-1)->getNeuronsofALayer();
+
+    // Hidden to Output
+    for (int i=0; i<lastHiddenLayerNeurons.size(); i++){
+        // For each neurons in last hidden layer
+        for (int j=0; j<(int)outputNeurons.size(); j++){
+            // For each weight of a neuron
+            
+            double A = - (errors.at(j));
+            double B = outputNeurons.at(j)->getDerivedVal();
+            double C = lastHiddenLayerNeurons.at(i)->getActivatedVal();
+
+            double gradient = A + B + C;
+            
+            double oldWeight = lastHiddenLayerNeurons.at(i)->getNeuronWeights().at(j);
+
+            // Since, new weight  = old weight - (learning lare * (-gradient))
+            double updatedWeight = oldWeight - ( learningRate * gradient);
+            lastHiddenLayerNeurons.at(i)->setWeightsAtIdx(j, updatedWeight);
+
+        }
+    }
+
+
 }
 
 

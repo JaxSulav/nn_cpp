@@ -25,6 +25,12 @@ int main(int argc, char const *argv[])
     nn->feedForward();
     nn->printLayers();
     nn->backwardPropagation();
+    std::cout << "_____----------__________--------__________----\n" << std::endl;
+    nn->printLayers();
+    nn->feedForward();
+    std::cout << "_____----------__________--------__________----\n" << std::endl;
+    nn->printLayers();
+
 
     delete nn;
     return 0;

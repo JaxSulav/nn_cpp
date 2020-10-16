@@ -9,3 +9,11 @@ namespace Activate
         return (val / (1 + abs(val)));
     }
 }
+namespace Derive
+{
+    double DERIVATION_SIGMOID(double activatedVal) 
+    {
+        // f'(x) = f(x) * (1 - f(x)) 
+        return(activatedVal * (1 - activatedVal));
+    }
+}
