@@ -15,10 +15,16 @@ int main(int argc, char const *argv[])
     input.push_back(1);
     input.push_back(2);
 
+    std::vector<double> output;
+    output.push_back(0);
+    output.push_back(1);
+    output.push_back(2);
+
     // Create new instance of neural network
-    NeuralNetwork *nn = new NeuralNetwork(topology, input);
+    NeuralNetwork *nn = new NeuralNetwork(topology, input, output);
     nn->feedForward();
     nn->printLayers();
+    nn->backwardPropagation();
 
     delete nn;
     return 0;

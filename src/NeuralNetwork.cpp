@@ -2,12 +2,18 @@
 
 
 
-NeuralNetwork::NeuralNetwork(std::vector<int> topology, std::vector<double> inputVals) 
+NeuralNetwork::NeuralNetwork(std::vector<int> topology, std::vector<double> inputVals, std::vector<double> expectedOutputs) 
 {
+    if (topology.size() == 0 || inputVals.size() == 0 || expectedOutputs.size() == 0){
+        std::cerr << "Empty topology or inputs or outputs" << std::endl;
+        std::abort();
+    }
+
     /* topology vector stores the values of number of neurons in each layer as index of the layers. 
     If the nn contains 3 input layers, 2 hidden and 2 output layer, topology vector contains (3,2,2) */
     this->topology = topology;
     this->inputVals = inputVals;
+    this->expectedOutputs = expectedOutputs;
 
     // Initialize the layers for the network and store in layers vector
     for (int i=0; i<(int)topology.size(); i++){
@@ -69,6 +75,40 @@ void NeuralNetwork::feedForward()
             this->layers.at(i)->getNeuronsofALayer().at(j)->setActivatedVal(activatedPerceptronOp);
 
         }
+    }
+}
+
+
+void NeuralNetwork::calcErrors() 
+{
+    /* Here we calculate the error, just by subtracting the activated result of output neuron 
+    from the expected output and do not take the MSE because we perform the derivative of 
+    the MSE in the backpropagation algorithm which will result in the negative of the following calculated error */
+
+    int outputLayerIdx = this->layers.size() -1 ;
+    // For each neuron in output layer
+    for (int i=0; i<(int)this->layers.at(outputLayerIdx)->getNeuronsofALayer().size(); i++){
+
+        // The output vector size should match the number of output neurons
+        if (this->expectedOutputs.size() != this->layers.at(outputLayerIdx)->getNeuronsofALayer().size()){
+            std::cerr << "Number of outputs doesn't match the number of neuron in output layer" << std::endl;
+            std::abort();
+        }
+        
+        double error = this->expectedOutputs.at(i) - this->layers.at(outputLayerIdx)->getNeuronsofALayer().at(i)->getActivatedVal();
+        errors.push_back(error);
+
+    }
+}
+
+
+void NeuralNetwork::backwardPropagation() 
+{
+    // Calculate errors
+    this->calcErrors();
+
+    for (int i=0; i<errors.size(); i++){
+        std::cout << "ERRORS: " << errors.at(i) << std::endl;
     }
 }
 
