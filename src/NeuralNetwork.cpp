@@ -120,28 +120,75 @@ void NeuralNetwork::backwardPropagation()
     std::vector<Neuron *> lastHiddenLayerNeurons = this->layers.at(this->layers.size()-2)->getNeuronsofALayer();
     std::vector<Neuron *> outputNeurons = this->layers.at(this->layers.size()-1)->getNeuronsofALayer();
 
-    // Hidden to Output
+    // Weights update for last hidden layer
     for (int i=0; i<lastHiddenLayerNeurons.size(); i++){
         // For each neurons in last hidden layer
         for (int j=0; j<(int)outputNeurons.size(); j++){
             // For each weight of a neuron
             
+            /* dE/dA -> Error w.r.t the activation function */
             double A = - (errors.at(j));
+            /* dA/dZ -> Activation function w.r.t the summed weight of the perceptron i.e the neuronVal of this neuron */
             double B = outputNeurons.at(j)->getDerivedVal();
+            /* dZ/dW -> Neuron value w.r.t the weight */
             double C = lastHiddenLayerNeurons.at(i)->getActivatedVal();
 
-            double gradient = A + B + C;
+            /* THE CHAIN RULE  (dE/dW) */
+            double gradient = A * B * C;
             
             double oldWeight = lastHiddenLayerNeurons.at(i)->getNeuronWeights().at(j);
 
-            // Since, new weight  = old weight - (learning lare * (-gradient))
+            // Since, new weight  = old weight + (learning lare * (-gradient))
             double updatedWeight = oldWeight - ( learningRate * gradient);
+            // Set the updated weight
             lastHiddenLayerNeurons.at(i)->setWeightsAtIdx(j, updatedWeight);
 
         }
     }
 
+    /*  Weights update for other layers */
+    for (int i=this->layers.size()-3; i>=0; i--){
+        // Incase of multiple hidden layers
+        // For each layer except last hidden layer and output layer
+        for (int j=0; j<(int)this->layers.at(i)->getNeuronsofALayer().size(); j++){
+            // For each neuron in ith layer
+            for (int k=0; k<(int)this->layers.at(i+1)->getNeuronsofALayer().size(); k++){
+                // For each weight of a neuron
+                double A1 = 0.00;
+                double B1 = this->layers.at(i+1)->getNeuronsofALayer().at(k)->getDerivedVal(); 
+                double C1;
+                
+                // If the layer is input layer, we simply take the neuron value because neurons at input layer does not have activated values
+                // Else we take the activated value of this neuron
+                if (i == 0){
+                    C1 = this->layers.at(i)->getNeuronsofALayer().at(j)->getNeuronVal();
+                }else{
+                    C1 = this->layers.at(i)->getNeuronsofALayer().at(j)->getActivatedVal();
+                }
 
+                for (int idx=0; idx<(int)outputNeurons.size(); idx++){
+                    double X = - (errors.at(idx)); 
+                    double Y = this->layers.at(i+2)->getNeuronsofALayer().at(idx)->getDerivedVal(); 
+                    double Z = this->layers.at(i+1)->getNeuronsofALayer().at(k)->getNeuronWeights().at(idx);
+
+                    double productH = X * Y * Z;
+                    A1 += productH;
+                } 
+
+                /* Chain Rule A1 and Backward propagation (B1 * C1) */
+                double gradient1 = A1 * B1 * C1;          
+
+                double oldWeight1 = this->layers.at(i)->getNeuronsofALayer().at(j)->getNeuronWeights().at(k);
+
+                // Since, new weight  = old weight + (learning lare * (-gradient))
+                double updatedWeight2 = oldWeight1 - (learningRate * gradient1);
+                // Set the updated weight
+                this->layers.at(i)->getNeuronsofALayer().at(j)->setWeightsAtIdx(k, updatedWeight2);
+            }
+        }
+    }
+
+    this->errors.clear();
 }
 
 

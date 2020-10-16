@@ -13,23 +13,19 @@ int main(int argc, char const *argv[])
     std::vector<double> input;
     input.push_back(0);
     input.push_back(1);
-    input.push_back(2);
-
-    std::vector<double> output;
-    output.push_back(0);
-    output.push_back(1);
-    output.push_back(2);
+    input.push_back(1);
 
     // Create new instance of neural network
-    NeuralNetwork *nn = new NeuralNetwork(topology, input, output);
-    nn->feedForward();
-    nn->printLayers();
-    nn->backwardPropagation();
-    std::cout << "_____----------__________--------__________----\n" << std::endl;
-    nn->printLayers();
-    nn->feedForward();
-    std::cout << "_____----------__________--------__________----\n" << std::endl;
-    nn->printLayers();
+    NeuralNetwork *nn = new NeuralNetwork(topology, input, input);
+
+    for (int i=0; i<1000; i++){
+        nn->feedForward();
+        std::cout << "\n_____----------__________ FEED FORWARD __________--------__________----\n" << std::endl;
+        nn->printLayers();
+        nn->backwardPropagation();
+        std::cout << "\n_____----------__________ BACK PROPAGATION __________--------__________----\n" << std::endl;
+        nn->printLayers();
+    }
 
 
     delete nn;
