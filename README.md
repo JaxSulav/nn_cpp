@@ -1,7 +1,7 @@
 # nn_cpp
 ### Implementation of artificial neural network in C++ 
 
-## The codes are designed to follow [this](https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/) helpful article by about feed forward and back propagation.
+### The codes are designed to follow [this](https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/) helpful article by about feed forward and back propagation.
 
 
 ---
