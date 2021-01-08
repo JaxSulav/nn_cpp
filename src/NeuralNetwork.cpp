@@ -108,11 +108,6 @@ void NeuralNetwork::calcErrors()
 
 void NeuralNetwork::backwardPropagation() 
 {
-    double learningRate = 1;
-
-    // Calculate errors
-    this->calcErrors();
-
     if (DEBUG){
         for (int i=0; i<(int)errors.size(); i++){
             std::cout << "ERRORS: " << errors.at(i) << std::endl;
@@ -142,8 +137,8 @@ void NeuralNetwork::backwardPropagation()
             
             double oldWeight = lastHiddenLayerNeurons.at(i)->getNeuronWeights().at(j);
 
-            // Since, new weight  = old weight + (learning lare * (-gradient))
-            double updatedWeight = oldWeight - ( learningRate * gradient);
+            // Since, new weight  = old weight + (LEARNING_RATE * (-gradient))
+            double updatedWeight = oldWeight - ( LEARNING_RATE * gradient);
             // Set the updated weight
             lastHiddenLayerNeurons.at(i)->setWeightsAtIdx(j, updatedWeight);
 
@@ -184,8 +179,8 @@ void NeuralNetwork::backwardPropagation()
 
                 double oldWeight1 = this->layers.at(i)->getNeuronsofALayer().at(j)->getNeuronWeights().at(k);
 
-                // Since, new weight  = old weight + (learning lare * (-gradient))
-                double updatedWeight2 = oldWeight1 - (learningRate * gradient1);
+                // Since, new weight  = old weight + (LEARNING_RATE * (-gradient))
+                double updatedWeight2 = oldWeight1 - (LEARNING_RATE * gradient1);
                 // Set the updated weight
                 this->layers.at(i)->getNeuronsofALayer().at(j)->setWeightsAtIdx(k, updatedWeight2);
             }
@@ -228,7 +223,8 @@ void NeuralNetwork::train(int iteration)
             std::cout << "\n_____----------__________ FEED FORWARD __________--------__________----\n" << std::endl;
             this->printLayers();
         }
-        
+
+        this->calcErrors();
         this->backwardPropagation();
 
         if (DEBUG){
