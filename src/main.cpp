@@ -4,6 +4,11 @@
 
 int main(int argc, char const *argv[])
 {
+    int ret_cfg = parse_config("../config.cfg");
+    if (ret_cfg == 1){
+        std::cout << "Unable to open the config file ..." << std::endl;
+    }
+
     // Topology of the neural network
     std::vector<int> topology;
     topology.push_back(3); // Input Layer
@@ -21,8 +26,7 @@ int main(int argc, char const *argv[])
 
     // Create new instance of neural network
     NeuralNetwork *nn = new NeuralNetwork(topology, input, output);
-    nn->train(1000);
-
+    nn->train(ITERATION);
 
     delete nn;
     return 0;

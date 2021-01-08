@@ -113,8 +113,12 @@ void NeuralNetwork::backwardPropagation()
     // Calculate errors
     this->calcErrors();
 
-    for (int i=0; i<(int)errors.size(); i++){
-        std::cout << "ERRORS: " << errors.at(i) << std::endl;
+    if (DEBUG){
+        for (int i=0; i<(int)errors.size(); i++){
+            std::cout << "ERRORS: " << errors.at(i) << std::endl;
+        }
+    }else {
+        std::cout << "ERRORS: " << errors.at((int)errors.size() - 1) << std::endl;
     }
 
     std::vector<Neuron *> lastHiddenLayerNeurons = this->layers.at(this->layers.size()-2)->getNeuronsofALayer();
@@ -217,11 +221,23 @@ void NeuralNetwork::train(int iteration)
 {
     // Train Network
     for (int i=0; i<iteration; i++){
+
         this->feedForward();
-        std::cout << "\n_____----------__________ FEED FORWARD __________--------__________----\n" << std::endl;
-        this->printLayers();
+
+        if (DEBUG){
+            std::cout << "\n_____----------__________ FEED FORWARD __________--------__________----\n" << std::endl;
+            this->printLayers();
+        }
+        
         this->backwardPropagation();
-        std::cout << "\n_____----------__________ BACK PROPAGATION __________--------__________----\n" << std::endl;
-        this->printLayers();
+
+        if (DEBUG){
+            std::cout << "\n_____----------__________ BACK PROPAGATION __________--------__________----\n" << std::endl;
+            this->printLayers();
+        }
+        else if (i == (iteration -1 )){
+            std::cout << "\n_____----------__________ FINAL LAYERS __________--------__________----\n" << std::endl;
+            this->printLayers();
+        }
     }
 }
