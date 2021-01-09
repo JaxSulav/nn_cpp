@@ -150,6 +150,8 @@ void NeuralNetwork::backwardPropagation()
         // Incase of multiple hidden layers
         // For each layer except last hidden layer and output layer
         for (int j=0; j<(int)this->layers.at(i)->getNeuronsofALayer().size(); j++){
+            if (DEBUG)
+                std::cout << "Layer " << std::to_string(i) <<  ", Neuron" << std::to_string(j) << " started" << std::endl;
             // For each neuron in ith layer
             for (int k=0; k<(int)this->layers.at(i+1)->getNeuronsofALayer().size(); k++){
                 // For each weight of a neuron
@@ -165,6 +167,7 @@ void NeuralNetwork::backwardPropagation()
                     C1 = this->layers.at(i)->getNeuronsofALayer().at(j)->getActivatedVal();
                 }
 
+                // Number of times it loops = number of neurons on the output layer
                 for (int idx=0; idx<(int)outputNeurons.size(); idx++){
                     double X = - (errors.at(idx));
                     double Y = this->layers.at(i+2)->getNeuronsofALayer().at(idx)->getDerivedVal(); 
@@ -184,6 +187,9 @@ void NeuralNetwork::backwardPropagation()
                 // Set the updated weight
                 this->layers.at(i)->getNeuronsofALayer().at(j)->setWeightsAtIdx(k, updatedWeight2);
             }
+            
+            if (DEBUG)
+                std::cout << "Layer " << std::to_string(i) <<  ", Neuron" << std::to_string(j) << " started" << std::endl;
         }
     }
 

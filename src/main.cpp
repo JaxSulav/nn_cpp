@@ -12,7 +12,7 @@ int main(int argc, char const *argv[])
     // Topology of the neural network
     std::vector<int> topology;
     topology.push_back(3); // Input Layer
-    topology.push_back(2); // Hidden Layer
+    topology.push_back(15); // Hidden Layer
     topology.push_back(2); // Ouptut Layer
 
     std::vector<double> input;
