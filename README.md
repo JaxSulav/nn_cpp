@@ -1,7 +1,7 @@
 # nn_cpp
 ### Implementation of artificial neural network in C++ 
 
-
+## The codes are designed to follow the concept of backpropagation, as described in my article [**here**](https://shresthasulav.com.np/neural%20network/2021/01/10/nn-step-by-step.html).
 ---
 
 ## Build Process: 
